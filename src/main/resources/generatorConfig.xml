@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="LogisticsDB" targetRuntime="MyBatis3Simple">
+        <jdbcConnection driverClass="org.h2.Driver"
+                        connectionURL="jdbc:h2:~/h2database/LogisticsDB;AUTO_SERVER=TRUE"
+                        userId="admin"
+                        password="admin">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="com.example.logistics.myBatis.model" targetProject="MAVEN" />
+
+        <sqlMapGenerator targetPackage="com.example.logistics.myBatis.xml" targetProject="MAVEN" />
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.logistics.myBatis.dao" targetProject="MAVEN" />
+
+
+        <table schema="public" tableName="company">
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
+        </table>
+        <table schema="public" tableName="truck">
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
+        </table>
+        <table schema="public" tableName="driver">
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
+        </table>
+    </context>
+</generatorConfiguration>

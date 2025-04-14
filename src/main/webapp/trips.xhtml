@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>Logistics</title>
+    <h:outputStylesheet name="css/style.css" />
+</h:head>
+<h:body>
+
+    <div class="navbar">
+        <h:link value="Companies" outcome="index" styleClass="nav-link" />
+        <h:link value="Trips" outcome="trips" styleClass="nav-link" />
+        <h:link value="MyBatis Companies" outcome="myBatis/companies" styleClass="nav-link" />
+    </div>
+
+    <h1>Trip Schedule</h1>
+    <h2>Trip Details</h2>
+    <h:form>
+        <h:dataTable value="#{trips.allTrips}" var="trip" varStatus="status" styleClass="dataTable">
+            <h:column>
+                <f:facet name="header">Trip ID</f:facet>
+                #{trip.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Departure Date</f:facet>
+                #{trip.departureDate}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Duration (min)</f:facet>
+                #{trip.duration}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Company</f:facet>
+                #{trip.truck.company.name}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Origin</f:facet>
+                #{trip.origin}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Destination</f:facet>
+                #{trip.destination}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Truck</f:facet>
+                Model: #{trip.truck.model} | Capacity: #{trip.truck.capacity} | #{trip.truck.company.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Drivers</f:facet>
+                <ui:repeat value="#{trip.drivers}" var="driver">
+                    #{driver.firstName} #{driver.lastName} | ID: #{driver.identificationNumber}<br/>
+                </ui:repeat>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Actions</f:facet>
+                <h:commandButton value="Delete" action="#{trips.deleteTrip(trip)}" class="commandButton"/>
+            </h:column>
+        </h:dataTable>
+    </h:form>
+
+    <h2>Add New Trip</h2>
+    <h:form>
+        <h:panelGrid columns="3" styleClass="form-grid">
+            <h:outputLabel for="departureDate" value="Departure Date:"/>
+            <h:inputText id="departureDate" value="#{trips.tripToCreate.departureDate}" converter="localDateConverter">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </h:inputText>
+            <h:message for="departureDate"/>
+
+            <h:outputLabel for="duration" value="Duration:"/>
+            <h:inputText id="duration" value="#{trips.tripToCreate.duration}" label="Duration"/>
+            <h:message for="duration"/>
+
+            <h:outputLabel for="origin" value="Origin Country:"/>
+            <h:inputText id="origin" value="#{trips.tripToCreate.origin}" label="Origin"/>
+            <h:message for="origin"/>
+
+            <h:outputLabel for="destination" value="Destination Country:"/>
+            <h:inputText id="destination" value="#{trips.tripToCreate.destination}" label="Destination"/>
+            <h:message for="destination"/>
+
+        </h:panelGrid>
+
+        <h:outputLabel value="Company:" for="company" />
+        <h:selectOneMenu id="company" value="#{trips.selectedCompanyId}" converter="javax.faces.Long" styleClass="selectOneMenu">
+            <f:selectItem noSelectionOption="true" itemValue="#{null}" itemLabel="-- Select Company --" />
+            <f:selectItems value="#{trips.allCompanies}" var="company" itemValue="#{company.id}" itemLabel="#{company.name}" />
+            <f:ajax listener="#{trips.onCompanyChange}" render="chooseTruck chooseDrivers" />
+        </h:selectOneMenu>
+
+        <h:outputLabel value="Truck:" for="chooseTruck" />
+        <h:selectOneRadio id="chooseTruck" value="#{trips.selectedTruckId}" layout="pageDirection">
+            <f:selectItems value="#{trips.availableTrucks}" var="truck"
+                           itemValue="#{truck.id}" itemLabel="#{truck.model}" />
+            <f:ajax listener="#{trips.onTruckChange}" render="chooseDrivers" />
+        </h:selectOneRadio>
+
+        <h:outputLabel value="Drivers:" for="chooseDrivers" />
+        <h:selectManyCheckbox id="chooseDrivers" value="#{trips.tripToCreate.drivers}">
+            <f:selectItems value="#{trips.availableDrivers}" var="driver"
+                           itemValue="#{driver}" itemLabel="#{driver.firstName} #{driver.lastName}" />
+        </h:selectManyCheckbox>
+
+        <h:commandButton value="Add Trip" action="#{trips.createTrip}" class="commandButton"/>
+    </h:form>
+</h:body>
+</html>

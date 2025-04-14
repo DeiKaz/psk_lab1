@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Logistics</title>
+    <h:outputStylesheet name="css/style.css" />
+</h:head>
+<h:body>
+
+    <div class="navbar">
+        <h:link value="Companies" outcome="/index" styleClass="nav-link" />
+        <h:link value="Trips" outcome="/trips" styleClass="nav-link" />
+        <h:link value="MyBatis Companies" outcome="companies" styleClass="nav-link" />
+    </div>
+
+    <h1 class="header">Companies List</h1>
+    <h:form>
+        <h:dataTable value="#{companies.allCompanies}" var="company" styleClass="dataTable">
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                #{company.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Country</f:facet>
+                #{company.country}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <h:commandButton value="Delete" action="#{companies.deleteCompany(company)}" class="commandButton" />
+            </h:column>
+        </h:dataTable>
+    </h:form>
+
+    <h2 class="header">Add New Company</h2>
+    <h:form>
+        <h:panelGrid columns="2" styleClass="form-grid">
+            <h:outputLabel for="name" value="Name:" />
+            <h:inputText id="name" value="#{companies.companyToCreate.name}" required="true" requiredMessage="Name is required." />
+
+            <h:outputLabel for="country" value="Country:" />
+            <h:inputText id="country" value="#{companies.companyToCreate.country}" required="true" requiredMessage="Country is required." />
+        </h:panelGrid>
+
+        <h:commandButton value="Add Company" action="#{companies.createCompany}" class="commandButton" />
+    </h:form>
+
+    <h1 class="header">Trucks and Drivers</h1>
+    <h:form>
+        <h:selectOneMenu value="#{companies.selectedCompanyId}" converter="javax.faces.Long" styleClass="selectOneMenu">
+            <f:selectItem itemLabel="Select Company" itemValue="" noSelectionOption="true" />
+            <f:selectItems value="#{companies.allCompanies}" var="company" itemValue="#{company.id}" itemLabel="#{company.name}" />
+            <f:ajax listener="#{companies.onCompanySelected}" render="trucks drivers" />
+        </h:selectOneMenu>
+    </h:form>
+
+    <h2 class="header">Truck List for Company</h2>
+    <h:form id="trucks">
+        <h:dataTable value="#{trucks.allSelectedTrucks}" var="truck" styleClass="dataTable">
+            <h:column>
+                <f:facet name="header">Id</f:facet>
+                #{truck.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Model</f:facet>
+                #{truck.model}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Capacity</f:facet>
+                #{truck.capacity}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <h:commandButton value="Delete" action="#{trucks.deleteTruck(truck)}" class="commandButton" />
+            </h:column>
+        </h:dataTable>
+    </h:form>
+
+    <h:form id="addTruckForm">
+        <h2 class="header">Add New Truck</h2>
+        <h:panelGrid columns="2" styleClass="form-grid">
+            <h:outputLabel for="model" value="Model:" />
+            <h:inputText id="model" value="#{trucks.truckToCreate.model}" required="true" requiredMessage="Model is required." />
+
+            <h:outputLabel for="capacity" value="Capacity:" />
+            <h:inputText id="capacity" value="#{trucks.truckToCreate.capacity}" required="true" requiredMessage="Capacity is required." />
+
+            <h:commandButton value="Add Truck" action="#{trucks.createTruck}" class="commandButton" />
+        </h:panelGrid>
+    </h:form>
+
+    <h2 class="header">Driver List for Company</h2>
+    <h:form id="drivers">
+        <h:dataTable value="#{drivers.allSelectedDrivers}" var="driver" styleClass="dataTable">
+            <h:column>
+                <f:facet name="header">Id</f:facet>
+                #{driver.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">First Name</f:facet>
+                #{driver.firstName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Last Name</f:facet>
+                #{driver.lastName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Identification Number</f:facet>
+                #{driver.identificationNumber}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <h:commandButton value="Delete" action="#{drivers.deleteDriver(driver)}" class="commandButton" />
+            </h:column>
+        </h:dataTable>
+    </h:form>
+
+    <h:form id="addDriverForm">
+        <h2 class="header">Add New Driver</h2>
+        <h:panelGrid columns="2" styleClass="form-grid">
+            <h:outputLabel for="firstName" value="First Name:" />
+            <h:inputText id="firstName" value="#{drivers.driverToCreate.firstName}" required="true" requiredMessage="First name is required." />
+
+            <h:outputLabel for="lastName" value="Last Name:" />
+            <h:inputText id="lastName" value="#{drivers.driverToCreate.lastName}" required="true" requiredMessage="Last name is required." />
+
+            <h:outputLabel for="identificationNumber" value="Identification Number (from 5 digits):" />
+            <h:inputText id="identificationNumber" value="#{drivers.driverToCreate.identificationNumber}" required="true" requiredMessage="Identification number is required." />
+
+            <h:commandButton value="Add Driver" action="#{drivers.createDriver}" class="commandButton" />
+        </h:panelGrid>
+    </h:form>
+</h:body>
+</html>
