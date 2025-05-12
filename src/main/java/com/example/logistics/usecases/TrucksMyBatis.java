@@ -1,7 +1,6 @@
 package com.example.logistics.usecases;
 
 import com.example.logistics.myBatis.dao.TruckMapper;
-import com.example.logistics.myBatis.model.Company;
 import com.example.logistics.myBatis.model.Truck;
 
 
