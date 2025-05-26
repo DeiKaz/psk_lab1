@@ -63,4 +63,9 @@
     select ID, CAPACITY, MODEL, COMPANY_ID
     from PUBLIC.TRUCK
   </select>
+  <select id="findByCompany" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, CAPACITY, MODEL, COMPANY_ID
+    from PUBLIC.TRUCK
+    where COMPANY_ID = #{companyId}
+  </select>
 </mapper>

@@ -65,4 +65,9 @@
     select ID, FIRST_NAME, IDENTIFICATION_NUMBER, LAST_NAME, COMPANY_ID
     from PUBLIC.DRIVER
   </select>
+  <select id="findByCompany" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, FIRST_NAME, IDENTIFICATION_NUMBER, LAST_NAME, COMPANY_ID
+    from PUBLIC.DRIVER
+    where COMPANY_ID = #{companyId}
+  </select>
 </mapper>

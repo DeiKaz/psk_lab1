@@ -15,7 +15,7 @@ import java.util.Objects;
 @Getter @Setter
 public class Company {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Basic(optional = false)

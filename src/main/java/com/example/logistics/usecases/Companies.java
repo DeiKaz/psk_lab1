@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
+import java.io.Console;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,9 +32,6 @@ public class Companies implements Serializable {
 
     @Getter
     private List<Company> allCompanies;
-
-//    @Getter
-//    private Map<Long, Integer> truckCount = new HashMap<>();
 
     public void loadAllCompanies(){
         this.allCompanies = companyDAO.findAll();

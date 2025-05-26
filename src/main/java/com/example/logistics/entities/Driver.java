@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 @Getter @Setter
 public class Driver {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Basic(optional = false)
